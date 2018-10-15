@@ -129,11 +129,11 @@ int mqtt_shadow_thread(void) {
 
 
 
-int mqtt_shadow_example(void)
+int tc_mqtt_shadow_example(void)
 {
     rt_err_t result;
     rt_thread_t tid;
-    int stack_size = RT_PKG_MQTT_THREAD_STACK_SIZE;
+    int stack_size = 10240;
     int priority = 20;
     char *stack;
 
@@ -172,11 +172,11 @@ int mqtt_shadow_example(void)
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
-FINSH_FUNCTION_EXPORT(mqtt_shadow_example, startup mqtt shadow example);
+FINSH_FUNCTION_EXPORT(tc_mqtt_shadow_example, startup mqtt shadow example);
 #endif
 
 #ifdef FINSH_USING_MSH
-MSH_CMD_EXPORT(mqtt_shadow_example, startup mqtt shadow example);
+MSH_CMD_EXPORT(tc_mqtt_shadow_example, startup mqtt shadow example);
 #endif
 
 

@@ -1,77 +1,9 @@
-##  开发准备
+##  Tencent Iot-Kit for RTthread Package 
 
-### SDK 获取
+### 概述
 
-腾讯云 IoT Suite C SDK 的下载地址： [tencent-cloud-iotsuite-embedded-c.git](https://github.com/tencentyun/tencent-cloud-iotsuite-embedded-c.git)
+Tencent Iot-Kit for RTthread Package 是基于[腾讯云C-SDK](https://github.com/tencentyun/tencent-cloud-iotsuite-embedded-c.git)在RThread环境开发的软件包，基于该软件包提供的能力，可以实现腾讯云IOT平台的连接及应用。
 
-```shell
-git clone https://github.com/tencentyun/tencent-cloud-iotsuite-embedded-c.git
-```
-
-
-### 开发环境
-1. SDK 在 Linux 环境下的测试和验证，主要基于 Ubuntu 16.04 版本，gcc-5.4 (建议至少 gcc-4.7+)，Python 2.7.12+(代码生成及控制台命令行脚本)，cmake 2.8+。
-
-```shell
-sudo apt install cmake python2.7 git build-essential
-```
-
-2. 配置并运行示例：
-- [基础版 MQTT 示例](examples/basic_edition/mqtt/README.md)
-- [高级版 MQTT 示例](examples/advanced_edition/mqtt/README.md)
-
-### 编译及运行
-1. 执行下面的命令，编译示例程序：
-
-```shell
-cd tencent-cloud-iotsuite-embedded-c
-mkdir -p build
-cd build
-cmake ../
-make
-```
-
-2. 编译后，build目录下的关键输出及说明如下：
-
-```shell
-bin
-|-- basic_mqtt               # 基础版 MQTT 连接云服务演示程序
-|-- basic_coap               # 基础版 CoAP 连接云服务演示程序
-|-- advaned_mqtt             # 高级版 MQTT 连接云服务演示程序
-|-- advaned_coap             # 高级版 CoAP 连接云服务演示程序
-|-- scn_ota                  # OTA 功能演示程序
-|-- scn_smartbox             # 基于基础版 MQTT 协议开发的智能货柜演示程序
-|-- scn_light                # 基于高级版 MQTT 协议开发的智能灯演示程序
-lib
-|-- libtc_iot_common.a      # SDK 基础工具库，负责http、json、base64等解析和编解码功能
-|-- libtc_iot_hal.a         # SDK 的硬件及操作系统抽象，负责内存、定时器、网络交互等功能
-|-- libtc_iot_mqtt_client.a # SDK 基础版 MQTT 协议库，负责 MQTT 协议解析及连接管理
-|-- libtc_iot_suite.a       # SDK 高级版功能库，基于 MQTT 封装了高级版数据模板功能。
-|-- libtc_iot_coap.a        # SDK CoAP 协议封装，用于资源受限设备，通过 CoAP 协议使用基础版消息上行及高级版数据模板功能。
-|-- libtc_iot_http_mqapi.a  # SDK HTTP RPC 协议封装，用于资源受限设备，通过 HTTP 协议使用高级版数据模板功能。
-|-- libtc_iot_ota.a         # SDK OTA 功能库，提供了 OTA 协议收发处理及固件下载功能
-|-- libMQTTPacketClient.a   # 第三方库，用于 MQTT 协议解析
-|-- libmbedtls.a            # 第三方库，用于 TLS 及 DTLS 协议处理
-|-- libjsmn.a               # 第三方库，用于 JSON 协议解析
-
-```
-
-3. 执行示例程序：
-
-```shell
-# 注意：在运行前，每个示例程序都需要预先配置对应的产品 ID、设备名称、设备密钥等信息，
-# 请注意参考 examples 目录下对应示例程序的 README，进行预先配置。
-
-cd bin
-
-# 运行demo程序
-./basic_mqtt
-# or
-./advanced_app
-
-...
-
-```
 
 ## SDK接口说明
 以下是C SDK 提供的功能和对应 API，用于设备端编写业务逻辑，API 接口暂不支持多线程调用，在多线程环境下，请勿跨线程调用。 更加详细的接口功能说明请查看 [include/tc_iot_export.h](include/tc_iot_export.h) 中的注释。
@@ -243,4 +175,73 @@ C-SDK 中提供的 HAL 层是基于 Linux 等 POSIX 体系系统的参考实现�
 | DTLS 连接 | tc_iot_hal_dtls_read | 接收 DTLS 对端发送的数据 | 可选，基于DTLS加密通讯时实现 |
 | DTLS 连接 | tc_iot_hal_dtls_disconnect | 断开 DTLS 连接 | 可选，基于DTLS加密通讯时实现 |
 | DTLS 连接 | tc_iot_hal_dtls_destroy | 释放 DTLS 相关资源 | 可选，基于DTLS加密通讯时实现 |
+
+
+## 软件包使用
+###RTthread配置
+- RT-Thread env开发工具中使用 `menuconfig` 使能 tencent-iotkit 软件包，配置产品及设备信息，并根据产品需求配置相应选项
+
+```shell
+RT-Thread online packages  --->
+    IoT - internet of things  --->
+        IoT Cloud  --->
+			--- Tencent-iotkit:  Tencent Cloud SDK for IoT platform                                                                                               
+                   Select Auth Mode (AUTH BY TOKEN)  --->                                                                                              
+             (mqtt-1egtdjqza) Config Product Key                                                                                                       
+             (rt_thread_dev1) Config Device Name                                                                                                       
+             (92b0e676cdd608c4fb56386967613764) Config Device Secret                                                                                   
+             [*]   Enable MQTT                                                                                                                         
+                     Select MQTT data type (Enable MQTT Advanced)  --->                                                                                
+             [ ]     Enable MQTT SSL                                                                                                                   
+             [ ]   Enable COAP                                                                                                                         
+             [ ]   Enable SCENARIOS                                                                                                                    
+             [ ]   Enable HTTP                                                                                                                         
+                          Version (latest)  --->
+```
+
+- 如果使能TLS功能，还需要选择mbedtls软件包
+```shell
+RT-Thread online packages  --->
+    security packages  --->
+         --- mbedtls:An open source, portable, easy to use, readable and flexible SSL library                                                                
+		[*]   Store the AES tables in ROM (NEW)                                                                                                             
+		(2)   Maximum window size used (NEW)                                                                                                                
+		(3584) Maxium fragment length in bytes (NEW)                                                                                                        
+		[ ]   Enable a mbedtls client example (NEW)                                                                                                         
+		[ ]   Enable Debug log output (NEW)                                                                                                                 
+			version (latest)  --->
+```
+
+- 使用 `pkgs --update` 命令下载软件包
+
+### 编译及运行
+1. 使用命令 scons --target=xxx 输出对应的工程，编译 
+
+
+2. 执行示例程序：
+
+### 运行demo程序
+系统启动后，在 MSH 中使用命令执行：
+
+- 数据模板例程
+
+该示例程序演示了如何基于腾讯云数据模板，和云端实现布尔型、枚举型、数值型、字符串型数据交互，MSH 命令如下所示：
+
+```shell
+msh />tc_mqtt_shadow_example
+TC MQTT Shadow Exmaple,TC_IOT_SDK_VER:2.6
+TRACE tc_iot_server_init:375 [c->s] shadow_get{"method":"get","passthrough":{"sid":"89390000"},"metadata":false}
+...
+TRACE tc_iot_mqtt_refresh_dynamic_sign:1186 usename[rt_thread_dev1] password[productId=iot-1l60dtl0&nonce=1350022348&timestamp=1539578219&signature=d4bMuKE1NVvE1hjAPiXnXR
+request username and password for mqtt success.
+...
+TRACE tc_iot_shadow_check_and_report:1035 report(first time): "param_bool":false
+TRACE tc_iot_shadow_check_and_report:1035 report(first time): "param_enum":0
+TRACE tc_iot_shadow_check_and_report:1035 report(first time): "param_number":0.000000
+TRACE tc_iot_shadow_check_and_report:1035 report(first time): "param_string":""
+TRACE tc_iot_shadow_check_and_report:1114 requesting with: {"method":"update","passthrough":{"sid":"196c0001"},"state":{"reported":{"param_bool":false,"param_enum":0,"param_number":0.000000,"param_string":""}}}
+...
+TRACE _tc_iot_report_message_ack_callback:47 [s->c] {"method":"reply","timestamp":1539578239,"payload":{"code":0,"status":"OK"},"passthrough":{"sid":"196c0001"}}
+...
+```
 
