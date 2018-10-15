@@ -80,24 +80,21 @@ SDK 抽象定义了硬件及操作系统平台抽象层（HAL 层），将所依
 都封装在 HAL 层（对应库libtc_iot_hal）中，进行跨平台移植时，首先都需要根据对应平台的硬件及操作系统情况，
 对应适配或实现相关的功能。
 
-平台移植相关的头文件及源文件代码结构如下：
+
+\src\platform\rtthread
+Tencent Iot-Kit for RTthread Package软件包已完成基于Rtthread 平台的移植，移植基于RTthread SAL层提供的BSD 网络编程接口。
+相关的头文件及源文件代码结构如下：
 ```shell
-include/platform/
-|-- linux                   # 不同的平台或系统，单独建立独立的目录
-|   |-- tc_iot_platform.h   # 引入对应平台相关的定义或系统头文件
-|-- tc_iot_hal_network.h    # 网络相关定义
-|-- tc_iot_hal_os.h         # 操作系统内存、时间戳等相关定义
-|-- tc_iot_hal_timer.h      # 定时器相关定义
-src/platform/
-|-- CMakeLists.txt
-|-- linux
+/src/platform
+|-- rtthread                 # rtthread平台移植的目录，对应rtthread软件包要求的port目录
     |-- CMakeLists.txt
     |-- tc_iot_hal_net.c    # TCP 非加密直连方式网络接口实现
-    |-- tc_iot_hal_os.c     # 内存及时间戳实现
+    |-- tc_iot_hal_os.c     # 延时、打印机时间戳实现
     |-- tc_iot_hal_timer.c  # 定时器相关实现
     |-- tc_iot_hal_tls.c    # TLS 加密网络接口实现
     |-- tc_iot_hal_udp.c    # UDP 接口实现
-    |-- tc_iot_hal_dtls.c    # DTLS 加密网络接口实现
+    |-- tc_iot_hal_dtls.c   # DTLS 加密网络接口实现
+	|-- tc_iot_get_time.c   # NTP实现UTC时间获取
 ```
 
 C-SDK 中提供的 HAL 层是基于 Linux 等 POSIX 体系系统的参考实现，但并不强耦合要求实现按照 POSIX 接口方式，移植时可根据目标系统的情况，灵活调整。
@@ -178,7 +175,7 @@ C-SDK 中提供的 HAL 层是基于 Linux 等 POSIX 体系系统的参考实现�
 
 
 ## 软件包使用
-###RTthread配置
+### RTthread配置
 - RT-Thread env开发工具中使用 `menuconfig` 使能 tencent-iotkit 软件包，配置产品及设备信息，并根据产品需求配置相应选项
 
 ```shell
