@@ -4,19 +4,20 @@
 
 Tencent Iot-Kit for RTthread Package 是基于[腾讯云C-SDK](https://github.com/tencentyun/tencent-cloud-iotsuite-embedded-c.git)在RThread环境开发的软件包，基于该软件包提供的能力，可以实现腾讯云IOT平台的连接及应用。
 
-###1.1 SDK架构图
+### 1.1 SDK架构图
 ![sdk-architecture](https://user-images.githubusercontent.com/990858/46805530-dc9f8e00-cd97-11e8-888b-1dd1171bfc1a.png)
 
-###1.2 目录结构
-| 名称            					 | 说明 |
-| ----            					 | ---- |
-| docs           					 | 文档目录 |
-| tencent-cloud-iotsuite-embedded-c	 | 腾讯云iotsuit源码 |
-| ports            					 | 移植文件目录 |
-| samples         					 | 示例文件目录 |
-| README.md       					 | 软件包使用说明 |
-| SConscript     				     | RT-Thread 默认的构建脚本 |
+### 1.2 目录结构
 
+| 名称            | 说明 |
+| ----            | ---- |
+| docs            | 文档目录 |
+| tencent-cloud-iotsuite-embedded-c         | 腾讯云iotsuit源码 |
+| ports           | 移植文件目录 |
+| samples         | 示例文件目录 |
+| LICENSE         | 许可证文件 |
+| README.md       | 软件包使用说明 |
+| SConscript      | RT-Thread 默认的构建脚本 |
 ### 1.3 SDK接口说明
 以下是C SDK 提供的功能和对应 API，用于设备端编写业务逻辑，API 接口暂不支持多线程调用，在多线程环境下，请勿跨线程调用。 更加详细的接口功能说明请查看 [include/tc_iot_export.h](include/tc_iot_export.h) 中的注释。
 
